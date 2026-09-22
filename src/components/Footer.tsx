@@ -1,0 +1,106 @@
+import { Link } from 'react-router';
+import Logo from './Logo';
+
+export default function Footer() {
+  return (
+    <footer style={{ background: '#0F0F0E', color: '#FFFFFF', paddingTop: '72px', paddingBottom: '40px' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gap: '48px',
+          paddingBottom: '56px',
+          borderBottom: '1px solid rgba(255,255,255,0.1)',
+        }}>
+          {/* Col 1: Brand */}
+          <div style={{ gridColumn: 'span 1' }}>
+            <Logo variant="light" size="sm" />
+            <p style={{
+              marginTop: '20px',
+              fontFamily: 'Inter, system-ui, sans-serif',
+              fontSize: '13px',
+              lineHeight: '1.7',
+              color: 'rgba(255,255,255,0.55)',
+              maxWidth: '220px',
+            }}>
+              Practical AI. Exceptional Talent. Smarter Business.
+            </p>
+            <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.35)', fontFamily: 'Inter', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Offices</span>
+              <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', fontFamily: 'Inter' }}>Oklahoma City, USA</span>
+              <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', fontFamily: 'Inter' }}>Gujrat, Pakistan</span>
+            </div>
+          </div>
+
+          {/* Col 2: Services */}
+          <div>
+            <h4 style={{ fontFamily: 'Inter', fontSize: '11px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: '20px' }}>
+              Services
+            </h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {['AI Consulting', 'Workflow Automation', 'AI Agents', 'Technology Staff Augmentation'].map(s => (
+                <li key={s}>
+                  <Link to="/services" style={{ fontFamily: 'Inter', fontSize: '14px', color: 'rgba(255,255,255,0.65)', textDecoration: 'none', transition: 'color 0.15s' }}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#FFFFFF')}
+                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.65)')}
+                  >{s}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 3: Company */}
+          <div>
+            <h4 style={{ fontFamily: 'Inter', fontSize: '11px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: '20px' }}>
+              Company
+            </h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {[
+                { label: 'About', to: '/about' },
+                { label: 'Insights', to: '/insights' },
+                { label: 'Contact', to: '/contact' },
+              ].map(l => (
+                <li key={l.to}>
+                  <Link to={l.to} style={{ fontFamily: 'Inter', fontSize: '14px', color: 'rgba(255,255,255,0.65)', textDecoration: 'none', transition: 'color 0.15s' }}
+                    onMouseEnter={e => (e.currentTarget.style.color = '#FFFFFF')}
+                    onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.65)')}
+                  >{l.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Col 4: Locations */}
+          <div>
+            <h4 style={{ fontFamily: 'Inter', fontSize: '11px', fontWeight: 600, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginBottom: '20px' }}>
+              Locations
+            </h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <p style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', margin: '0 0 4px' }}>Oklahoma City, USA</p>
+                <p style={{ fontFamily: 'Inter', fontSize: '13px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>U.S. Operations &amp; Consulting</p>
+              </div>
+              <div>
+                <p style={{ fontFamily: 'Inter', fontSize: '14px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', margin: '0 0 4px' }}>Gujrat, Pakistan</p>
+                <p style={{ fontFamily: 'Inter', fontSize: '13px', color: 'rgba(255,255,255,0.4)', margin: 0 }}>Technology Talent &amp; Delivery</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div style={{ paddingTop: '32px', display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'space-between', alignItems: 'center' }}>
+          <p style={{ fontFamily: 'Inter', fontSize: '12px', color: 'rgba(255,255,255,0.3)', margin: 0 }}>
+            © {new Date().getFullYear()} Gilani Enterprises. All rights reserved.
+          </p>
+          <Link to="/privacy" style={{ fontFamily: 'Inter', fontSize: '12px', color: 'rgba(255,255,255,0.3)', textDecoration: 'none' }}
+            onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.6)')}
+            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.3)')}
+          >
+            Privacy Policy
+          </Link>
+        </div>
+      </div>
+    </footer>
+  );
+}

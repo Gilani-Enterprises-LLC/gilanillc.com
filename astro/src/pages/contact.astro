@@ -1,0 +1,230 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+
+const container = { maxWidth: '1200px', margin: '0 auto' };
+
+const locations = [
+  {
+    city: 'Oklahoma City, USA',
+    flag: '🇺🇸',
+    role: 'U.S. Operations & Client Consulting',
+    note: 'Primary point of contact for U.S. clients and business relationships.',
+  },
+  {
+    city: 'Gujrat, Pakistan',
+    flag: '🇵🇰',
+    role: 'Technology Delivery',
+    note: 'Technology talent, development teams and business operations.',
+  },
+];
+
+const expectations = [
+  'A response within one business day',
+  'A direct conversation — no sales scripts',
+  "Honest guidance on whether we're the right fit",
+  'No pressure to move forward',
+];
+---
+
+<Layout title="Contact — Let's Talk About What's Next" description="Whether you're exploring AI automation, redesigning a business workflow or looking to expand your technology team, start with a conversation.">
+  <div>
+    <!-- Hero -->
+    <section style={{ paddingTop: '160px', paddingBottom: '80px', padding: '160px 24px 80px', background: 'var(--foreground)' }}>
+      <div style={container}>
+        <SectionLabel text="Contact" />
+        <h1 style={{ fontFamily: 'Instrument Serif, Georgia, serif', fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 400, color: '#FFFFFF', margin: '0 0 20px', lineHeight: 1.15, maxWidth: '600px' }}>
+          Let's Talk About What's Next
+        </h1>
+        <p style={{ fontFamily: 'Inter', fontSize: '16px', color: 'rgba(255,255,255,0.6)', maxWidth: '520px', lineHeight: 1.75, margin: 0 }}>
+          Whether you're exploring AI automation, redesigning a business workflow or looking to expand your technology team, start with a conversation.
+        </p>
+      </div>
+    </section>
+
+    <!-- Form + Info -->
+    <section style={{ padding: '80px 24px 100px', background: 'var(--background)' }}>
+      <div style={container}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '80px', alignItems: 'start' }}>
+          <!-- Contact form -->
+          <div>
+            <div id="contact-success" style={{ display: 'none', padding: '48px', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '4px', textAlign: 'center' }}>
+              <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(12,110,88,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0C6E58" stroke-width="2" stroke-linecap="round"><path d="M20 6L9 17l-5-5" /></svg>
+              </div>
+              <h2 style={{ fontFamily: 'Instrument Serif, Georgia, serif', fontSize: '28px', fontWeight: 400, margin: '0 0 12px' }}>Message received.</h2>
+              <p style={{ fontFamily: 'Inter', fontSize: '15px', color: 'var(--muted-foreground)', lineHeight: 1.7, margin: '0 0 24px' }}>
+                Thank you for reaching out. We'll be in touch shortly to discuss your needs.
+              </p>
+              <button type="button" id="send-another" class="link-btn">Send another message</button>
+            </div>
+
+            <form id="contact-form" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div>
+                  <label class="field-label" for="name">Name <span class="required">*</span></label>
+                  <input class="field-input" type="text" id="name" name="name" required placeholder="Your name" />
+                </div>
+                <div>
+                  <label class="field-label" for="company">Company</label>
+                  <input class="field-input" type="text" id="company" name="company" placeholder="Company name" />
+                </div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div>
+                  <label class="field-label" for="email">Business Email <span class="required">*</span></label>
+                  <input class="field-input" type="email" id="email" name="email" required placeholder="you@company.com" />
+                </div>
+                <div>
+                  <label class="field-label" for="phone">Phone (optional)</label>
+                  <input class="field-input" type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000" />
+                </div>
+              </div>
+              <div>
+                <label class="field-label" for="service">What can we help with? <span class="required">*</span></label>
+                <select class="field-input field-select" id="service" name="service" required>
+                  <option value="" disabled selected>Select a service area</option>
+                  <option value="ai-consulting">AI Consulting</option>
+                  <option value="workflow-automation">Workflow Automation</option>
+                  <option value="ai-agents">AI Agents</option>
+                  <option value="staff-augmentation">Technology Staff Augmentation</option>
+                  <option value="offshore-team">Offshore Development Team</option>
+                  <option value="general">General Inquiry</option>
+                </select>
+              </div>
+              <div>
+                <label class="field-label" for="message">Tell us about your situation</label>
+                <textarea class="field-input field-textarea" id="message" name="message" placeholder="Briefly describe your business challenge or what you're trying to accomplish..."></textarea>
+              </div>
+              <button type="submit" class="submit-btn">Start the Conversation</button>
+            </form>
+          </div>
+
+          <!-- Contact info -->
+          <div>
+            <SectionLabel text="Our Locations" />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '48px' }}>
+              {locations.map((loc) => (
+                <div style={{ display: 'flex', gap: '20px', padding: '24px', border: '1px solid var(--border)', borderRadius: '4px', background: 'var(--card)' }}>
+                  <span style={{ fontSize: '24px', flexShrink: 0 }}>{loc.flag}</span>
+                  <div>
+                    <p style={{ fontFamily: 'Inter', fontSize: '15px', fontWeight: 700, margin: '0 0 4px' }}>{loc.city}</p>
+                    <p style={{ fontFamily: 'Inter', fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--primary)', margin: '0 0 8px' }}>{loc.role}</p>
+                    <p style={{ fontFamily: 'Inter', fontSize: '13px', color: 'var(--muted-foreground)', margin: 0, lineHeight: 1.6 }}>{loc.note}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <!-- What to expect -->
+            <div style={{ padding: '32px', background: 'var(--muted)', borderRadius: '4px' }}>
+              <p style={{ fontFamily: 'Inter', fontSize: '13px', fontWeight: 700, margin: '0 0 16px', color: 'var(--foreground)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                What to expect
+              </p>
+              {expectations.map((item) => (
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '8px 0' }}>
+                  <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--primary)', marginTop: '6px', flexShrink: 0 }} />
+                  <span style={{ fontFamily: 'Inter', fontSize: '14px', color: 'var(--muted-foreground)', lineHeight: 1.6 }}>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .field-label {
+    display: block;
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--foreground);
+    margin-bottom: 8px;
+  }
+  .required {
+    color: var(--primary);
+  }
+  .field-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 14px;
+    color: var(--foreground);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    outline: none;
+    transition: border-color 0.15s;
+    appearance: none;
+    box-sizing: border-box;
+  }
+  .field-input:focus {
+    border-color: var(--primary);
+  }
+  .field-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6966' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+  .field-textarea {
+    min-height: 140px;
+    resize: vertical;
+  }
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 16px 32px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    align-self: flex-start;
+  }
+  .submit-btn:hover {
+    opacity: 0.88;
+  }
+  .link-btn {
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  // No backend is wired up yet — this reproduces the original app's
+  // client-only "fake submit" behavior (shows a success state, doesn't
+  // send anything). Replace with a real submit handler (fetch to an
+  // API route / Cloudflare Pages Function / form service) when ready.
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const success = document.getElementById('contact-success');
+  const sendAnother = document.getElementById('send-another');
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    form.style.display = 'none';
+    if (success) success.style.display = 'block';
+  });
+
+  sendAnother?.addEventListener('click', () => {
+    if (success) success.style.display = 'none';
+    if (form) {
+      form.style.display = 'flex';
+      form.reset();
+    }
+  });
+</script>
