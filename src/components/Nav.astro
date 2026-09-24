@@ -1,0 +1,208 @@
+---
+import Logo from './Logo.astro';
+import { NAV_LINKS, SITE } from '../config/site';
+
+const { pathname } = Astro.url;
+function isActive(href: string) {
+  const bare = href.replace(/\/$/, '');
+  return pathname === href || pathname === bare || pathname.startsWith(href);
+}
+---
+
+<header
+  style={{
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 50,
+    transition: 'background 0.2s, box-shadow 0.2s, border-color 0.2s',
+    background: 'rgba(248, 247, 244, 0.96)',
+    backdropFilter: 'blur(12px)',
+    borderBottom: '1px solid var(--border)',
+  }}
+>
+  <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+    <div style={{ display: 'flex', alignItems: 'center', height: '68px', gap: '40px' }}>
+      {/* Logo */}
+      <a
+        href="/"
+        data-nav-close
+        style={{ textDecoration: 'none', flexShrink: 0 }}
+      >
+        <Logo size="md" />
+        <span class="sr-only">{SITE.name} — Home</span>
+      </a>
+
+      {/* Desktop nav */}
+      <nav aria-label="Primary" style={{ alignItems: 'center', gap: '32px', marginLeft: 'auto' }} class="hidden md:flex">
+        {NAV_LINKS.map((l) => (
+          <a
+            href={l.href}
+            class="nav-link"
+            aria-current={isActive(l.href) ? 'page' : undefined}
+            style={{
+              fontFamily: 'var(--font-sans)',
+              fontSize: '14px',
+              fontWeight: 500,
+              letterSpacing: '0.01em',
+              color: isActive(l.href) ? 'var(--primary)' : 'var(--foreground)',
+              textDecoration: 'none',
+              transition: 'color 0.15s',
+              opacity: isActive(l.href) ? 1 : 0.82,
+            }}
+          >
+            {l.label}
+          </a>
+        ))}
+      </nav>
+
+      {/* Mobile hamburger */}
+      <button
+        id="nav-toggle"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="nav-mobile-menu"
+        style={{
+          marginLeft: 'auto',
+          flexDirection: 'column',
+          gap: '5px',
+          padding: '8px',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+        }}
+        class="flex md:hidden"
+      >
+        <span class="nav-bar nav-bar-top" aria-hidden="true"></span>
+        <span class="nav-bar nav-bar-mid" aria-hidden="true"></span>
+        <span class="nav-bar nav-bar-bottom" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+{/* Mobile menu (rendered outside <header> to escape its stacking context, as the original portal did) */}
+<nav id="nav-mobile-menu" class="nav-mobile-menu" aria-label="Mobile">
+  {NAV_LINKS.map((l) => (
+    <a
+      href={l.href}
+      data-nav-close
+      class="nav-mobile-link"
+      aria-current={isActive(l.href) ? 'page' : undefined}
+      style={{ color: isActive(l.href) ? 'var(--primary)' : 'var(--foreground)' }}
+    >
+      {l.label}
+    </a>
+  ))}
+  <a href="/contact/" data-nav-close class="nav-mobile-cta">Contact Us</a>
+</nav>
+
+<style>
+  .nav-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--foreground);
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  .nav-mobile-menu {
+    position: fixed;
+    top: 68px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    background: var(--background);
+    padding: 32px 24px;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+  }
+  .nav-mobile-menu.open {
+    display: flex;
+  }
+
+  .nav-mobile-link {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 22px;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-mobile-cta {
+    margin-top: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 600;
+    padding: 14px 32px;
+    border-radius: 3px;
+    text-decoration: none;
+  }
+
+  /* Hamburger -> X animation, driven by the button's aria-expanded state */
+  #nav-toggle[aria-expanded='true'] .nav-bar-top {
+    transform: translateY(7px) rotate(45deg);
+  }
+  #nav-toggle[aria-expanded='true'] .nav-bar-mid {
+    opacity: 0;
+  }
+  #nav-toggle[aria-expanded='true'] .nav-bar-bottom {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+</style>
+
+<script>
+  // Progressive enhancement for the mobile menu (≈0.5 KB). All links are
+  // plain <a> tags in the HTML, so navigation works without JavaScript.
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('nav-mobile-menu');
+
+  if (toggle && menu) {
+    const isOpen = () => menu.classList.contains('open');
+
+    const closeMenu = (returnFocus = false) => {
+      menu.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Open menu');
+      document.body.style.overflow = '';
+      if (returnFocus) toggle.focus();
+    };
+
+    const openMenu = () => {
+      menu.classList.add('open');
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', 'Close menu');
+      document.body.style.overflow = 'hidden';
+    };
+
+    toggle.addEventListener('click', () => (isOpen() ? closeMenu() : openMenu()));
+
+    document.querySelectorAll('[data-nav-close]').forEach((el) => {
+      el.addEventListener('click', () => closeMenu());
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) closeMenu(true);
+    });
+
+    // Close the overlay if the viewport grows past the md breakpoint.
+    window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+      if (e.matches) closeMenu();
+    });
+
+    // Reset state when a page is restored from the back/forward cache.
+    window.addEventListener('pageshow', () => closeMenu());
+  }
+</script>

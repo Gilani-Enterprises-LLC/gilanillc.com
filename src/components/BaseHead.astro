@@ -1,0 +1,105 @@
+---
+/**
+ * <head> contents for every page: charset/viewport, title, description,
+ * canonical, robots, Open Graph, Twitter card, icons, font preloads and
+ * JSON-LD structured data.
+ */
+import '@fontsource-variable/inter/wght.css';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
+import '../styles/global.css';
+
+// Preload the Latin subsets used above the fold so the LCP text (hero
+// headings) renders in the final font without a late swap. Vite hashes these
+// to the same URLs the @font-face rules reference.
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import serifLatin from '@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2?url';
+import serifLatinItalic from '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2?url';
+
+import { SITE, absoluteUrl } from '../config/site';
+import {
+  breadcrumbNode,
+  organizationNode,
+  serializeJsonLd,
+  webPageNode,
+  websiteNode,
+  type Crumb,
+  type JsonLdNode,
+  type PageType,
+} from '../lib/schema';
+
+export interface Props {
+  title: string;
+  description: string;
+  pageType?: PageType;
+  breadcrumbs?: Crumb[];
+  schema?: JsonLdNode[];
+  noindex?: boolean;
+  ogType?: 'website' | 'article';
+  preloadSerifItalic?: boolean;
+}
+
+const {
+  title,
+  description,
+  pageType = 'WebPage',
+  breadcrumbs = [],
+  schema = [],
+  noindex = false,
+  ogType = 'website',
+  preloadSerifItalic = false,
+} = Astro.props;
+
+const canonical = absoluteUrl(Astro.url.pathname);
+const ogImage = absoluteUrl(SITE.ogImage.path);
+
+const graph: JsonLdNode[] = [
+  organizationNode(),
+  websiteNode(),
+  webPageNode({ url: canonical, type: pageType, title, description, hasBreadcrumb: breadcrumbs.length > 0 }),
+  ...(breadcrumbs.length > 0 ? [breadcrumbNode(canonical, breadcrumbs)] : []),
+  ...schema,
+];
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex ? <meta name="robots" content="noindex, follow" /> : <link rel="canonical" href={canonical} />}
+
+<link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={serifLatin} as="font" type="font/woff2" crossorigin />
+{preloadSerifItalic && <link rel="preload" href={serifLatinItalic} as="font" type="font/woff2" crossorigin />}
+
+{/* Icons & PWA metadata */}
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content={SITE.themeColor} />
+<meta name="format-detection" content="telephone=no" />
+<link rel="sitemap" href="/sitemap.xml" />
+
+{/* Open Graph */}
+<meta property="og:type" content={ogType} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:locale" content={SITE.locale} />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content={String(SITE.ogImage.width)} />
+<meta property="og:image:height" content={String(SITE.ogImage.height)} />
+<meta property="og:image:alt" content={SITE.ogImage.alt} />
+
+{/* Twitter / X */}
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={SITE.ogImage.alt} />
+
+{/* Structured data */}
+<script type="application/ld+json" is:inline set:html={serializeJsonLd(graph)} />

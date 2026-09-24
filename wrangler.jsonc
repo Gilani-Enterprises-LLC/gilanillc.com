@@ -1,0 +1,60 @@
+/**
+ * Cloudflare Workers — Static Assets + contact-form API for gilanillc.com
+ * https://developers.cloudflare.com/workers/static-assets/
+ *
+ * - Every page is pre-rendered by `pnpm build` into ./dist and served
+ *   directly from Cloudflare's asset storage (the Worker script is NOT
+ *   invoked for pages, CSS, JS, fonts or images).
+ * - Only requests matching `run_worker_first` (/api/*) run worker/index.ts,
+ *   which handles the contact form and emails it via Cloudflare Email Service.
+ *
+ *   pnpm cf:dev       # build + run locally (http://localhost:8787); emails are
+ *                     # simulated and logged to the console, not sent
+ *   pnpm cf:dry-run   # build + validate the deployment without uploading
+ *   pnpm deploy       # build + deploy (requires `wrangler login` or CLOUDFLARE_API_TOKEN)
+ */
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "gilanillc-com",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Serve /services/index.html at /services/ and redirect /services → /services/
+    // (matches Astro's trailingSlash: 'always' + build.format: 'directory').
+    "html_handling": "auto-trailing-slash",
+    // Unknown URLs get dist/404.html with a real 404 status code.
+    "not_found_handling": "404-page",
+    // Only API routes execute the Worker; everything else is a static asset.
+    "run_worker_first": ["/api/*"]
+  },
+  // Cloudflare Email Service (Email Sending). Locked to a single recipient and
+  // a single sender so the binding can never be abused to email anyone else.
+  // Setup (one-time, dashboard → Compute → Email Service):
+  //   1. Onboard gilanillc.com under Email Sending (adds SPF/DKIM/DMARC and
+  //      cf-bounce records; your existing mailbox MX records are untouched).
+  //   2. Verify info@gilanillc.com as a destination address.
+  // Sending to a verified destination address in your own account is free on
+  // all plans. See README.md → "Contact form email".
+  "send_email": [
+    {
+      "name": "CONTACT_EMAIL",
+      "destination_address": "info@gilanillc.com",
+      "allowed_sender_addresses": ["website@gilanillc.com"]
+    }
+  ],
+  "vars": {
+    "CONTACT_TO": "info@gilanillc.com",
+    "CONTACT_FROM": "website@gilanillc.com",
+    "CONTACT_FROM_NAME": "gilanillc.com Contact Form",
+    // Comma-separated origins allowed to POST the form (CSRF protection).
+    "ALLOWED_ORIGINS": "https://gilanillc.com,https://www.gilanillc.com"
+  },
+  // Custom domain — uncomment once the gilanillc.com zone is on Cloudflare.
+  // Redirect www.gilanillc.com → https://gilanillc.com with a Cloudflare
+  // Redirect Rule (Rules → Redirect Rules) rather than serving both hosts.
+  // "routes": [{ "pattern": "gilanillc.com", "custom_domain": true }],
+  "workers_dev": true,
+  "observability": { "enabled": true }
+}

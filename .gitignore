@@ -1,0 +1,55 @@
+# ── Dependencies ──────────────────────────────────────────────
+node_modules/
+.pnpm-store/
+
+# ── Build output ──────────────────────────────────────────────
+dist/
+build/
+
+# ── Astro ─────────────────────────────────────────────────────
+# Generated types and content-layer cache (recreated by `astro sync`/`build`)
+.astro/
+
+# ── Cloudflare / Wrangler ─────────────────────────────────────
+.wrangler/
+.dev.vars
+.dev.vars.*
+worker-configuration.d.ts
+
+# ── Environment ───────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ── Caches & tooling ──────────────────────────────────────────
+.cache/
+.vite/
+*.tsbuildinfo
+.eslintcache
+.lighthouseci/
+
+# ── Logs ──────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+
+# ── OS / editor ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# ── Temp files ────────────────────────────────────────────────
+.tmp-*
+_to_delete/
+
+# ── Figma Make / agent platform state (not project source) ───
+.claude-replay.*
+/.figma/design-context/
+/.plugins/
+/.opencode-skills/

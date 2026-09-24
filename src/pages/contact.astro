@@ -1,0 +1,411 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+
+const container = { maxWidth: '1200px', margin: '0 auto' };
+
+const locations = [
+  {
+    city: 'Oklahoma City, USA',
+    flag: '🇺🇸',
+    country: 'United States',
+    role: 'U.S. Operations & Client Consulting',
+    note: 'Primary point of contact for U.S. clients and business relationships.',
+  },
+  {
+    city: 'Gujrat, Pakistan',
+    flag: '🇵🇰',
+    country: 'Pakistan',
+    role: 'Technology Delivery',
+    note: 'Technology talent, development teams and business operations.',
+  },
+];
+
+const expectations = [
+  'A response within one business day',
+  'A direct conversation — no sales scripts',
+  "Honest guidance on whether we're the right fit",
+  'No pressure to move forward',
+];
+---
+
+<Layout
+  title="Contact Gilani Enterprises — Let's Talk About What's Next"
+  description="Talk with Gilani Enterprises about AI automation, workflow redesign or expanding your technology team. Offices in Oklahoma City, USA and Gujrat, Pakistan."
+  pageType="ContactPage"
+  breadcrumbs={[{ name: 'Contact', path: '/contact/' }]}
+>
+  <div>
+    {/* Hero */}
+    <section style={{ paddingTop: '160px', paddingBottom: '80px', padding: '160px 24px 80px', background: 'var(--foreground)' }}>
+      <div style={container}>
+        <SectionLabel text="Contact" tone="dark" />
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 400, color: '#FFFFFF', margin: '0 0 20px', lineHeight: 1.15, maxWidth: '600px' }}>
+          Let's Talk About What's Next
+        </h1>
+        <p style={{ fontFamily: 'var(--font-sans)', fontSize: '16px', color: 'rgba(255,255,255,0.6)', maxWidth: '520px', lineHeight: 1.75, margin: 0 }}>
+          Whether you're exploring AI automation, redesigning a business workflow or looking to expand your technology team, start with a conversation.
+        </p>
+      </div>
+    </section>
+
+    {/* Form + Info */}
+    <section style={{ padding: '80px 24px 100px', background: 'var(--background)' }}>
+      <div style={container}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '80px', alignItems: 'start' }}>
+          {/* Contact form */}
+          <div>
+            <div id="contact-success" role="status" tabindex="-1" style={{ display: 'none', padding: '48px', background: 'var(--card)', border: '1px solid var(--border)', borderRadius: '4px', textAlign: 'center' }}>
+              <div style={{ width: '56px', height: '56px', borderRadius: '50%', background: 'rgba(12,110,88,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0C6E58" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M20 6L9 17l-5-5" /></svg>
+              </div>
+              <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: '28px', fontWeight: 400, margin: '0 0 12px' }}>Message received.</h2>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'var(--muted-foreground)', lineHeight: 1.7, margin: '0 0 24px' }}>
+                Thank you for reaching out. Your message has been sent to our team and we'll be in touch shortly to discuss your needs.
+              </p>
+              <button type="button" id="send-another" class="link-btn">Send another message</button>
+            </div>
+
+            <h2 id="contact-form-heading" class="sr-only">Send us a message</h2>
+            <form id="contact-form" action="/api/contact" method="post" aria-labelledby="contact-form-heading" novalidate style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+              <p id="contact-error" class="form-error" role="alert" hidden></p>
+              {/* Spam traps: a honeypot field humans never see, and a render timestamp. */}
+              <div class="hp" aria-hidden="true">
+                <label for="website">Website</label>
+                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+              </div>
+              <input type="hidden" name="_t" id="contact-t" value="" />
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div>
+                  <label class="field-label" for="name">Name <span class="required" aria-hidden="true">*</span></label>
+                  <input class="field-input" type="text" id="name" name="name" required maxlength="120" autocomplete="name" placeholder="Your name" aria-describedby="name-error" />
+                  <p class="field-error" id="name-error" hidden></p>
+                </div>
+                <div>
+                  <label class="field-label" for="company">Company</label>
+                  <input class="field-input" type="text" id="company" name="company" maxlength="160" autocomplete="organization" placeholder="Company name" aria-describedby="company-error" />
+                  <p class="field-error" id="company-error" hidden></p>
+                </div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div>
+                  <label class="field-label" for="email">Business Email <span class="required" aria-hidden="true">*</span></label>
+                  <input class="field-input" type="email" id="email" name="email" required maxlength="254" autocomplete="email" placeholder="you@company.com" aria-describedby="email-error" />
+                  <p class="field-error" id="email-error" hidden></p>
+                </div>
+                <div>
+                  <label class="field-label" for="phone">Phone (optional)</label>
+                  <input class="field-input" type="tel" id="phone" name="phone" maxlength="40" autocomplete="tel" placeholder="+1 (555) 000-0000" aria-describedby="phone-error" />
+                  <p class="field-error" id="phone-error" hidden></p>
+                </div>
+              </div>
+              <div>
+                <label class="field-label" for="service">What can we help with? <span class="required" aria-hidden="true">*</span></label>
+                <select class="field-input field-select" id="service" name="service" required aria-describedby="service-error">
+                  <option value="" disabled selected>Select a service area</option>
+                  <option value="ai-consulting">AI Consulting</option>
+                  <option value="workflow-automation">Workflow Automation</option>
+                  <option value="ai-agents">AI Agents</option>
+                  <option value="staff-augmentation">Technology Staff Augmentation</option>
+                  <option value="offshore-team">Offshore Development Team</option>
+                  <option value="general">General Inquiry</option>
+                </select>
+                <p class="field-error" id="service-error" hidden></p>
+              </div>
+              <div>
+                <label class="field-label" for="message">Tell us about your situation</label>
+                <textarea class="field-input field-textarea" id="message" name="message" maxlength="5000" placeholder="Briefly describe your business challenge or what you're trying to accomplish..." aria-describedby="message-error"></textarea>
+                <p class="field-error" id="message-error" hidden></p>
+              </div>
+              <button type="submit" class="submit-btn" id="contact-submit">Start the Conversation</button>
+            </form>
+          </div>
+
+          {/* Contact info */}
+          <div>
+            <SectionLabel text="Our Locations" as="h2" />
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '48px' }}>
+              {locations.map((loc) => (
+                <div style={{ display: 'flex', gap: '20px', padding: '24px', border: '1px solid var(--border)', borderRadius: '4px', background: 'var(--card)' }}>
+                  <span role="img" aria-label={loc.country} style={{ fontSize: '24px', flexShrink: 0 }}>{loc.flag}</span>
+                  <div>
+                    <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 700, margin: '0 0 4px' }}>{loc.city}</p>
+                    <p style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--primary)', margin: '0 0 8px' }}>{loc.role}</p>
+                    <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--muted-foreground)', margin: 0, lineHeight: 1.6 }}>{loc.note}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* What to expect */}
+            <div style={{ padding: '32px', background: 'var(--muted)', borderRadius: '4px' }}>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', fontWeight: 700, margin: '0 0 16px', color: 'var(--foreground)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                What to expect
+              </p>
+              <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+              {expectations.map((item) => (
+                <li style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '8px 0' }}>
+                  <div aria-hidden="true" style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--primary)', marginTop: '6px', flexShrink: 0 }} />
+                  <span style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'var(--muted-foreground)', lineHeight: 1.6 }}>{item}</span>
+                </li>
+              ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .field-label {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--foreground);
+    margin-bottom: 8px;
+  }
+  .required {
+    color: var(--primary);
+  }
+  .field-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--foreground);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    outline: none;
+    transition: border-color 0.15s;
+    appearance: none;
+    box-sizing: border-box;
+  }
+  .field-input:focus {
+    border-color: var(--primary);
+  }
+  .field-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6966' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+    cursor: pointer;
+  }
+  .field-textarea {
+    min-height: 140px;
+    resize: vertical;
+  }
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: var(--primary-foreground);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 16px 32px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    align-self: flex-start;
+  }
+  .submit-btn:hover {
+    opacity: 0.88;
+  }
+  .submit-btn:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+  .field-input[aria-invalid='true'] {
+    border-color: #b42318;
+  }
+  .field-error {
+    margin: 6px 0 0;
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: #b42318;
+  }
+  .form-error {
+    margin: 0;
+    padding: 12px 16px;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: #7a1a12;
+    background: #fdf1ef;
+    border: 1px solid #f3c5bd;
+    border-radius: 3px;
+  }
+  .form-error a {
+    color: inherit;
+    font-weight: 600;
+  }
+  /* Honeypot — visually hidden and removed from the accessibility tree. */
+  .hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .link-btn {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  // Progressive enhancement for the contact form. Without JavaScript the form
+  // still POSTs to /api/contact and the Worker redirects to /contact/thank-you/.
+  // With JavaScript we submit via fetch, show inline validation errors and
+  // the success panel without leaving the page.
+  const CONTACT_EMAIL = 'info@gilanillc.com';
+  const FIELDS = ['name', 'company', 'email', 'phone', 'service', 'message'] as const;
+  type Field = (typeof FIELDS)[number];
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const heading = document.getElementById('contact-form-heading');
+  const success = document.getElementById('contact-success');
+  const sendAnother = document.getElementById('send-another');
+  const errorBox = document.getElementById('contact-error');
+  const submit = document.getElementById('contact-submit') as HTMLButtonElement | null;
+  const stamp = document.getElementById('contact-t') as HTMLInputElement | null;
+
+  const MESSAGES: Record<string, string> = {
+    invalid: 'Please correct the highlighted fields.',
+    send_failed: 'Your message could not be sent right now.',
+    network: 'We could not reach the server. Please check your connection.',
+  };
+
+  const resetStamp = () => stamp && (stamp.value = String(Date.now()));
+  resetStamp();
+
+  function showError(message: string) {
+    if (!errorBox) return;
+    errorBox.innerHTML = '';
+    errorBox.append(`${message} You can also email us at `);
+    const a = document.createElement('a');
+    a.href = `mailto:${CONTACT_EMAIL}`;
+    a.textContent = CONTACT_EMAIL;
+    errorBox.append(a, '.');
+    errorBox.hidden = false;
+  }
+
+  function clearErrors() {
+    if (errorBox) errorBox.hidden = true;
+    FIELDS.forEach((f) => setFieldError(f, ''));
+  }
+
+  function setFieldError(field: Field, message: string) {
+    const input = form?.elements.namedItem(field) as HTMLElement | null;
+    const el = document.getElementById(`${field}-error`);
+    if (input) {
+      if (message) input.setAttribute('aria-invalid', 'true');
+      else input.removeAttribute('aria-invalid');
+    }
+    if (el) {
+      el.textContent = message;
+      el.hidden = !message;
+    }
+  }
+
+  function clientValidate(): boolean {
+    if (!form) return false;
+    let firstInvalid: HTMLElement | null = null;
+    for (const f of FIELDS) {
+      const input = form.elements.namedItem(f) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null;
+      if (!input) continue;
+      input.value = input.value.trimStart();
+      let msg = '';
+      if (!input.checkValidity()) {
+        if (input.validity.valueMissing) {
+          msg = f === 'service' ? 'Please select a service area.' : f === 'email' ? 'Please enter your business email.' : 'Please enter your name.';
+        } else if (input.validity.typeMismatch) {
+          msg = 'Please enter a valid email address.';
+        } else {
+          msg = input.validationMessage;
+        }
+      }
+      setFieldError(f, msg);
+      if (msg && !firstInvalid) firstInvalid = input;
+    }
+    firstInvalid?.focus();
+    return !firstInvalid;
+  }
+
+  function showSuccess() {
+    if (!form) return;
+    form.style.display = 'none';
+    if (heading) heading.hidden = true;
+    if (success) {
+      success.style.display = 'block';
+      success.focus();
+    }
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+    if (!clientValidate()) return;
+
+    if (submit) {
+      submit.disabled = true;
+      submit.textContent = 'Sending…';
+    }
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+        code?: string;
+        fields?: Partial<Record<Field, string>>;
+      };
+      if (res.ok && data.ok) {
+        showSuccess();
+        return;
+      }
+      if (data.fields) {
+        for (const [f, msg] of Object.entries(data.fields)) setFieldError(f as Field, msg ?? '');
+      }
+      showError(data.error ?? MESSAGES[data.code ?? ''] ?? MESSAGES.send_failed);
+    } catch {
+      showError(MESSAGES.network);
+    } finally {
+      if (submit) {
+        submit.disabled = false;
+        submit.textContent = 'Start the Conversation';
+      }
+    }
+  });
+
+  sendAnother?.addEventListener('click', () => {
+    if (success) success.style.display = 'none';
+    if (heading) heading.hidden = false;
+    if (form) {
+      form.style.display = 'flex';
+      form.reset();
+      clearErrors();
+      resetStamp();
+      form.querySelector<HTMLInputElement>('#name')?.focus();
+    }
+  });
+
+  // No-JS fallback redirects back here with ?error=<code>; surface it.
+  const errCode = new URLSearchParams(location.search).get('error');
+  if (errCode) showError(MESSAGES[errCode] ?? MESSAGES.send_failed);
+</script>

@@ -1,0 +1,73 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../config/site';
+import type { Crumb, JsonLdNode, PageType } from '../lib/schema';
+
+interface Props {
+  /** Page title. " | Gilani Enterprises" is appended unless already present. */
+  title: string;
+  description?: string;
+  pageType?: PageType;
+  /** Breadcrumb trail (excluding Home, which is added automatically). */
+  breadcrumbs?: Crumb[];
+  /** Extra JSON-LD nodes for this page (e.g. Service). */
+  schema?: JsonLdNode[];
+  noindex?: boolean;
+  /** Preload the italic serif face when it appears above the fold. */
+  preloadSerifItalic?: boolean;
+}
+
+const {
+  title,
+  description = SITE.defaultDescription,
+  pageType,
+  breadcrumbs,
+  schema,
+  noindex,
+  preloadSerifItalic,
+} = Astro.props;
+
+const pageTitle = title.includes(SITE.name) ? title : `${title} | ${SITE.name}`;
+const crumbs = breadcrumbs && breadcrumbs.length > 0 ? [{ name: 'Home', path: '/' }, ...breadcrumbs] : [];
+---
+
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <BaseHead
+      title={pageTitle}
+      description={description}
+      pageType={pageType}
+      breadcrumbs={crumbs}
+      schema={schema}
+      noindex={noindex}
+      preloadSerifItalic={preloadSerifItalic}
+    />
+  </head>
+  <body style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Nav />
+    <main id="main" tabindex="-1" style={{ flex: 1, outline: 'none' }}>
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      // Respect "reduce motion": freeze the decorative SMIL SVG animations
+      // (CSS media queries cannot pause SMIL). site.json: ignoreReducedMotion=false.
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const apply = () =>
+        document.querySelectorAll<SVGSVGElement>('svg[data-smil]').forEach((svg) => {
+          if (reduce.matches) {
+            svg.pauseAnimations();
+            svg.setCurrentTime(0);
+          } else {
+            svg.unpauseAnimations();
+          }
+        });
+      apply();
+      reduce.addEventListener('change', apply);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,163 @@
+/*
+ * Global styles — design tokens ported unchanged from the original Figma Make
+ * app (src/index.css). Web fonts are now self-hosted via Fontsource (imported
+ * in BaseHead.astro) instead of render-blocking Google Fonts @imports.
+ */
+@import 'tailwindcss';
+
+/*
+ * Metric-matched local fallbacks: while the web fonts load (font-display: swap)
+ * text renders in Arial / Times New Roman scaled to the same metrics, which
+ * keeps layout shift (CLS) close to zero when the real fonts swap in.
+ */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('Helvetica'), local('Liberation Sans');
+  size-adjust: 107.52%;
+  ascent-override: 90.1%;
+  descent-override: 22.43%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Instrument Serif Fallback';
+  src: local('Times New Roman'), local('Times'), local('Liberation Serif');
+  size-adjust: 82.64%;
+  ascent-override: 119.79%;
+  descent-override: 37.51%;
+  line-gap-override: 0%;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --font-family-sans: var(--font-sans);
+  --font-family-serif: var(--font-serif);
+}
+
+:root {
+  --background: #F8F7F4;
+  --foreground: #0F0F0E;
+  --card: #FFFFFF;
+  --card-foreground: #0F0F0E;
+  --primary: #0C6E58;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EDEAE3;
+  --secondary-foreground: #0F0F0E;
+  --muted: #F2EFE9;
+  --muted-foreground: #6B6966;
+  --accent: #0C6E58;
+  --accent-foreground: #FFFFFF;
+  --border: #E2DDD8;
+  --ring: #0C6E58;
+  --radius: 3px;
+  --font-sans: 'Inter Variable', 'Inter', 'Inter Fallback', system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', 'Instrument Serif Fallback', Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+/* ── Accessibility helpers ───────────────────────────────────────────── */
+
+/* Visible keyboard focus for every interactive element. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  transform: translateY(-200%);
+  background: var(--foreground);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  font: 600 14px/1.2 var(--font-sans);
+  text-decoration: none;
+  transition: transform 0.15s;
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Offset in-page anchor targets below the fixed 68px header. */
+[id] {
+  scroll-margin-top: 84px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

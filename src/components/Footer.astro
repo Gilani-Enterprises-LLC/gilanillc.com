@@ -1,0 +1,139 @@
+---
+import Logo from './Logo.astro';
+import { SITE } from '../config/site';
+
+const serviceLinks = [
+  { label: 'AI Consulting', href: '/services/#ai-consulting' },
+  { label: 'Workflow Automation', href: '/services/#ai-consulting' },
+  { label: 'AI Agents', href: '/services/#ai-agents' },
+  { label: 'Technology Staff Augmentation', href: '/services/#staff-augmentation' },
+];
+const companyLinks = [
+  { label: 'About', href: '/about/' },
+  { label: 'Insights', href: '/insights/' },
+  { label: 'Contact', href: '/contact/' },
+];
+
+// Low-contrast greys from the original (0.3–0.4 alpha, ≈2.7–3.8:1) were
+// raised to 0.5 alpha (≈4.9:1) to meet WCAG AA.
+// Footer column headings are <h2> for a valid heading outline (the original
+// used <h4>, which skipped levels); the visual style is unchanged.
+const headingStyle = {
+  fontFamily: 'var(--font-sans)',
+  fontSize: '11px',
+  fontWeight: 600,
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: 'rgba(255,255,255,0.5)',
+  margin: '0 0 20px',
+};
+const year = new Date().getFullYear();
+---
+
+<footer style={{ background: '#0F0F0E', color: '#FFFFFF', paddingTop: '72px', paddingBottom: '40px' }}>
+  <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+        gap: '48px',
+        paddingBottom: '56px',
+        borderBottom: '1px solid rgba(255,255,255,0.1)',
+      }}
+    >
+      {/* Col 1: Brand */}
+      <div style={{ gridColumn: 'span 1' }}>
+        <a href="/" style={{ display: 'block', width: 'fit-content', textDecoration: 'none' }}>
+          <Logo variant="light" size="md" />
+          <span class="sr-only">{SITE.name} — Home</span>
+        </a>
+        <p
+          style={{
+            marginTop: '20px',
+            fontFamily: 'var(--font-sans)',
+            fontSize: '13px',
+            lineHeight: '1.7',
+            color: 'rgba(255,255,255,0.55)',
+            maxWidth: '220px',
+          }}
+        >
+          {SITE.tagline}
+        </p>
+        <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.5)', fontFamily: 'var(--font-sans)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Offices</span>
+          {SITE.locations.map((loc) => (
+            <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', fontFamily: 'var(--font-sans)' }}>{loc.name}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* Col 2: Services */}
+      <nav aria-labelledby="footer-services">
+        <h2 id="footer-services" style={headingStyle}>Services</h2>
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {serviceLinks.map((s) => (
+            <li>
+              <a href={s.href} class="footer-link">{s.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {/* Col 3: Company */}
+      <nav aria-labelledby="footer-company">
+        <h2 id="footer-company" style={headingStyle}>Company</h2>
+        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          {companyLinks.map((l) => (
+            <li>
+              <a href={l.href} class="footer-link">{l.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      {/* Col 4: Locations */}
+      <div>
+        <h2 style={headingStyle}>Locations</h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {SITE.locations.map((loc) => (
+            <div>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '14px', fontWeight: 500, color: 'rgba(255,255,255,0.85)', margin: '0 0 4px' }}>{loc.name}</p>
+              <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'rgba(255,255,255,0.5)', margin: 0 }}>{loc.role}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* Bottom bar */}
+    <div style={{ paddingTop: '32px', display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'space-between', alignItems: 'center' }}>
+      <p style={{ fontFamily: 'var(--font-sans)', fontSize: '12px', color: 'rgba(255,255,255,0.5)', margin: 0 }}>
+        © {year} {SITE.name}. All rights reserved.
+      </p>
+      <a href="/privacy/" class="footer-bottom-link">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-link {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.65);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .footer-link:hover {
+    color: #ffffff;
+  }
+  .footer-bottom-link {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .footer-bottom-link:hover {
+    color: rgba(255, 255, 255, 0.75);
+  }
+</style>
