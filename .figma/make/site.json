@@ -1,0 +1,10 @@
+{
+  "description": "Offers a visually engaging platform that showcases content clearly and intuitively, enhancing user experience for visitors seeking streamlined information.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

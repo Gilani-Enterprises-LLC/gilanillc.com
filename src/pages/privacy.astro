@@ -1,0 +1,109 @@
+---
+/**
+ * Privacy Policy — linked from the footer (brief §20). The original Figma
+ * Make app linked to /privacy but never defined the route (it rendered the
+ * 404 page). This version describes only what the site actually does today.
+ * Have it reviewed by counsel before launch, and update it if analytics,
+ * cookies or a form backend are added.
+ */
+import Layout from '../layouts/Layout.astro';
+import SectionLabel from '../components/SectionLabel.astro';
+import { SITE } from '../config/site';
+
+const container = { maxWidth: '760px', margin: '0 auto' };
+const effectiveDate = '2026-09-23';
+const effectiveLabel = new Date(`${effectiveDate}T00:00:00Z`).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'UTC',
+});
+
+const h2 = {
+  fontFamily: 'var(--font-serif)',
+  fontSize: 'clamp(22px, 2.5vw, 28px)',
+  fontWeight: 400,
+  margin: '48px 0 16px',
+  lineHeight: 1.25,
+};
+---
+
+<Layout
+  title="Privacy Policy"
+  description={`How ${SITE.name} handles information collected through gilanillc.com, including contact form submissions.`}
+  breadcrumbs={[{ name: 'Privacy Policy', path: '/privacy/' }]}
+>
+  <section style={{ padding: '160px 24px 80px', background: 'var(--foreground)' }}>
+    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+      <SectionLabel text="Legal" tone="dark" />
+      <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 400, color: '#FFFFFF', margin: '0 0 20px', lineHeight: 1.15 }}>
+        Privacy Policy
+      </h1>
+      <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', color: 'rgba(255,255,255,0.6)', margin: 0 }}>
+        Effective <time datetime={effectiveDate}>{effectiveLabel}</time>
+      </p>
+    </div>
+  </section>
+
+  <section style={{ padding: '64px 24px 100px', background: 'var(--background)' }}>
+    <div class="prose" style={container}>
+      <p>
+        This policy explains how {SITE.name} (“we”, “us”) handles information when you visit
+        <a href="/">gilanillc.com</a> or contact us through this website.
+      </p>
+
+      <h2 style={h2}>Information you provide</h2>
+      <p>
+        If you use our contact form, we ask for your name, business email address and the service you are interested
+        in, and optionally your company name, phone number and a message. Your submission is emailed to our team at
+        info@gilanillc.com using Cloudflare's email service. We use this information only to respond to your enquiry
+        and to discuss a potential engagement with you.
+      </p>
+
+      <h2 style={h2}>Information collected automatically</h2>
+      <p>
+        This website does not use advertising or analytics cookies and does not run third-party tracking scripts. Fonts
+        and all other assets are served from our own domain. Our hosting provider, Cloudflare, processes standard
+        technical data such as IP addresses and request logs to deliver the site and protect it against abuse.
+      </p>
+
+      <h2 style={h2}>How we share information</h2>
+      <p>
+        We do not sell or rent personal information. We share it only with service providers that help us operate this
+        website or respond to you, or where required by law.
+      </p>
+
+      <h2 style={h2}>Retention</h2>
+      <p>
+        We keep enquiry details for as long as needed to respond and to maintain a record of our business
+        correspondence, and then delete them.
+      </p>
+
+      <h2 style={h2}>Your choices</h2>
+      <p>
+        You may ask us to access, correct or delete the personal information you have shared with us by sending a
+        request through our <a href="/contact/">contact page</a>.
+      </p>
+
+      <h2 style={h2}>Changes to this policy</h2>
+      <p>
+        If we change how we handle information, we will update this page and its effective date.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .prose p {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--muted-foreground);
+    margin: 0 0 16px;
+  }
+  .prose a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

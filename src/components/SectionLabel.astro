@@ -1,0 +1,30 @@
+---
+interface Props {
+  text: string;
+  /** Render as a heading when the label introduces a section with no other heading. */
+  as?: 'p' | 'h2' | 'h3';
+  id?: string;
+  /**
+   * 'dark' = label sits on the near-black hero background. Uses the lighter
+   * brand green (#10B981, already used in the home hero) because the primary
+   * green only reaches 3.1:1 contrast on #0F0F0E (WCAG AA needs 4.5:1).
+   */
+  tone?: 'light' | 'dark';
+}
+const { text, as: Tag = 'p', id, tone = 'light' } = Astro.props;
+---
+
+<Tag
+  id={id}
+  style={{
+    fontFamily: 'var(--font-sans)',
+    fontSize: '11px',
+    fontWeight: 600,
+    letterSpacing: '0.14em',
+    textTransform: 'uppercase',
+    color: tone === 'dark' ? '#10B981' : 'var(--primary)',
+    margin: '0 0 20px',
+  }}
+>
+  {text}
+</Tag>

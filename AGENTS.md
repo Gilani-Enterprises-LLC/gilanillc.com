@@ -1,35 +1,44 @@
-# figma-make-app
+# gilanillc.com
 
-React + Vite + Tailwind CSS project running inside Figma Make.
+Static marketing site for **Gilani Enterprises**, built with **Astro** (static output) and deployed to **Cloudflare Workers Static Assets**. It was migrated from a Figma Make React/Vite SPA; the visual design and responsive behaviour were preserved.
 
-## Development Server
+## Commands (pnpm)
 
-A Vite development server is **already running** on `$PORT` (default 8443). You don't need to start it manually.
+| Command | What it does |
+| --- | --- |
+| `pnpm install` | Install dependencies (pnpm version pinned in `package.json` / `.mise.toml`) |
+| `pnpm dev` | Astro dev server (http://localhost:4321, or `$PORT`) |
+| `pnpm build` | Pre-render every page to `dist/` |
+| `pnpm preview` | Serve `dist/` with Astro |
+| `pnpm check` | Generate Worker types, type-check `.astro`/`.ts` files (`astro check`) and the Worker (`tsc -p worker`) |
+| `pnpm cf:types` | Regenerate `worker/worker-configuration.d.ts` after editing `wrangler.jsonc` |
+| `pnpm cf:dev` | Build, then serve `dist/` through Wrangler exactly as Cloudflare will |
+| `pnpm cf:dry-run` | Build and validate the Cloudflare deployment without uploading |
+| `pnpm deploy` | Build and deploy with `wrangler deploy` |
 
-- Preview URL: The user can access the running app through the preview panel
-- Hot reload: Changes to source files are reflected immediately
+## Project structure
 
-## Project Structure
+- `astro.config.mjs` — `site`, static output, `trailingSlash: 'always'`, directory build format, inlined CSS, prefetch, Tailwind v4 Vite plugin
+- `wrangler.jsonc` — Worker with static assets (`./dist`, `auto-trailing-slash`, `404-page`); only `/api/*` runs Worker code; `send_email` binding for the contact form
+- `worker/index.ts` — `POST /api/contact`: validates the contact form and emails it to info@gilanillc.com via Cloudflare Email Service (Reply-To = visitor)
+- `public/` — copied verbatim: `_headers` (security + cache headers), favicons, `og-image.png`, `site.webmanifest`
+- `src/config/site.ts` — **single source of truth** for company facts, nav links, OG image, locations
+- `src/lib/schema.ts` — Schema.org JSON-LD builders (Organization, WebSite, WebPage, BreadcrumbList, Service)
+- `src/layouts/Layout.astro` — page shell (skip link, header, `<main id="main">`, footer, reduced-motion handler)
+- `src/components/BaseHead.astro` — title, description, canonical, robots, Open Graph, Twitter card, icons, font preloads, JSON-LD
+- `src/components/` — `Nav`, `Footer`, `Logo`, `SectionLabel`, `home/WorkflowViz`, `home/LocationArc`
+- `src/pages/` — one file per route: `/`, `/services/`, `/about/`, `/insights/`, `/contact/`, `/contact/thank-you/` (noindex), `/privacy/`, `404`
+- `src/pages/sitemap.xml.ts`, `src/pages/robots.txt.ts` — generated at build time
+- `src/styles/global.css` — Tailwind import, design tokens (CSS variables), fallback font metrics, a11y helpers
+- `docs/design-references/` — Figma Make screenshots and the original website brief (not part of the build)
 
-This is the canonical project structure. Start with task-relevant files below. Only follow imports or inspect other files when required, when a documented path is missing, or when the repository contradicts this guide.
+## Conventions
 
-- `src/main.tsx` - React entrypoint; imports `src/index.css` and mounts `src/App.tsx` into the `#root` element
-- `src/App.tsx` - Primary application component and the usual starting point for UI work
-- `src/index.css` - Global CSS entrypoint and Tailwind CSS v4 import
-- `index.html` - Vite HTML shell containing the `#root` element and loading `src/main.tsx`
-- `package.json` - Project dependencies and the Vite build, development, preview, and formatting scripts
-- `vite.config.ts` - Vite configuration with React, Tailwind CSS v4, and Figma Make plugins plus the `@` alias for `src`
-- `.mise.toml` - Toolchain versions for Node.js and pnpm
-
-## Dependencies
-
-- Runtime: React 19 and React DOM 19
-- Styling: Tailwind CSS v4 with the `@tailwindcss/vite` plugin
-- Build tooling: Vite 8, TypeScript 5.7, and `@vitejs/plugin-react`
-- Formatting: oxfmt
-
-## Styling
-
-This project uses **Tailwind CSS v4** through the `@tailwindcss/vite` plugin configured in `vite.config.ts`. `src/index.css` imports Tailwind with `@import 'tailwindcss';`. Use Tailwind utility classes directly in JSX and put global CSS or Tailwind v4 theme customization in `src/index.css`. This scaffold does not need a Tailwind config file or PostCSS config.
-
-`src/main.tsx` imports `src/index.css`, so global font wiring belongs in `src/index.css`. Keep CSS `@import` statements first, then add any `@font-face` rules and font-family defaults there.
+- **Static first.** Every page is pre-rendered. The only runtime code is `worker/index.ts` for `/api/*` (the contact form needs a server to send email). Do not add an SSR adapter unless a feature truly needs runtime rendering; document why if you do.
+- **No framework runtime.** Pages and components are `.astro`. Interactivity (mobile menu, Insights filter, contact form) is small vanilla `<script>` progressive enhancement. Only add a React/other island (`client:*`) for a component with genuinely complex client state.
+- **Links use trailing slashes** (`/services/`, not `/services`) to match canonical URLs and avoid redirects.
+- **Typography:** use `var(--font-sans)` / `var(--font-serif)`; fonts are self-hosted via Fontsource (`Inter Variable`, `Instrument Serif`) — do not add Google Fonts `<link>`/`@import`.
+- **Styling:** existing sections use inline `style={{…}}` objects (ported 1:1 from the Figma output) plus scoped `<style>` blocks for hover/focus states; Tailwind v4 utilities are available (`hidden md:flex`, etc.).
+- **SEO per page:** pass `title`, `description`, `pageType`, `breadcrumbs` (and `schema` for extra JSON-LD) to `<Layout>`. Exactly one `<h1>` per page; keep a logical `h2`/`h3` outline.
+- **Facts only:** never invent emails, phone numbers, street addresses, reviews, ratings or client names (site brief §13, §16). Insights posts are placeholders — do not emit `Article` schema until real articles exist.
+- **Images:** put content images in `src/assets/` and render with `astro:assets` `<Image>`/`<Picture>` (AVIF/WebP, width/height, lazy loading). `public/` is only for files that need fixed URLs.

@@ -1,0 +1,27 @@
+---
+---
+
+<svg viewBox="0 0 600 200" width="600" height="200" style={{ width: '100%', maxWidth: '600px', height: 'auto' }} aria-hidden="true" focusable="false" data-smil>
+  {/* Arc connecting two points */}
+  <path
+    d="M 80 160 Q 300 20 520 160"
+    fill="none"
+    stroke="#0C6E58"
+    stroke-width="1.5"
+    stroke-dasharray="6 4"
+    opacity="0.6"
+  />
+  {/* OKC dot */}
+  <circle cx="80" cy="160" r="6" fill="#0C6E58" />
+  <circle cx="80" cy="160" r="12" fill="#0C6E58" opacity="0.15" />
+  {/* Gujrat dot */}
+  <circle cx="520" cy="160" r="6" fill="#0C6E58" />
+  <circle cx="520" cy="160" r="12" fill="#0C6E58" opacity="0.15" />
+  {/* Moving dot along arc */}
+  <circle r="4" fill="#0C6E58" opacity="0.8">
+    <animateMotion dur="3s" repeatCount="indefinite">
+      <mpath href="#location-arc-path" />
+    </animateMotion>
+  </circle>
+  <path id="location-arc-path" d="M 80 160 Q 300 20 520 160" fill="none" />
+</svg>
