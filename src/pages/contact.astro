@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { SITE } from '../config/site';
 import SectionLabel from '../components/SectionLabel.astro';
 
 const container = { maxWidth: '1200px', margin: '0 auto' };
@@ -9,6 +10,7 @@ const locations = [
     city: 'Oklahoma City, USA',
     flag: '🇺🇸',
     country: 'United States',
+    email: SITE.locations[0].email,
     role: 'U.S. Operations & Client Consulting',
     note: 'Primary point of contact for U.S. clients and business relationships.',
   },
@@ -16,13 +18,14 @@ const locations = [
     city: 'Gujrat, Pakistan',
     flag: '🇵🇰',
     country: 'Pakistan',
+    email: SITE.locations[1].email,
     role: 'Technology Delivery',
     note: 'Technology talent, development teams and business operations.',
   },
 ];
 
 const expectations = [
-  'A response within one business day',
+  'A response within 3 business day',
   'A direct conversation — no sales scripts',
   "Honest guidance on whether we're the right fit",
   'No pressure to move forward',
@@ -30,7 +33,7 @@ const expectations = [
 ---
 
 <Layout
-  title="Contact Gilani Enterprises — Let's Talk About What's Next"
+  title="Contact Gilani Enterprises | AI & Technology Consulting"
   description="Talk with Gilani Enterprises about AI automation, workflow redesign or expanding your technology team. Offices in Oklahoma City, USA and Gujrat, Pakistan."
   pageType="ContactPage"
   breadcrumbs={[{ name: 'Contact', path: '/contact/' }]}
@@ -132,6 +135,7 @@ const expectations = [
                     <p style={{ fontFamily: 'var(--font-sans)', fontSize: '15px', fontWeight: 700, margin: '0 0 4px' }}>{loc.city}</p>
                     <p style={{ fontFamily: 'var(--font-sans)', fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--primary)', margin: '0 0 8px' }}>{loc.role}</p>
                     <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: 'var(--muted-foreground)', margin: 0, lineHeight: 1.6 }}>{loc.note}</p>
+                    <a href={`mailto:${loc.email}`} style={{ display: 'inline-block', marginTop: '12px', fontFamily: 'var(--font-sans)', fontSize: '14px', color: 'var(--primary)', textDecoration: 'underline', textUnderlineOffset: '3px', overflowWrap: 'anywhere' }}>{loc.email}</a>
                   </div>
                 </div>
               ))}

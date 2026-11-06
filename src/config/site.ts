@@ -10,9 +10,9 @@ export const SITE = {
   locale: 'en_US',
   language: 'en',
   tagline: 'Practical AI. Exceptional Talent. Smarter Business.',
-  defaultTitle: 'Gilani Enterprises — AI Consulting & Global Technology Talent',
+  defaultTitle: 'AI Consulting & Technology Talent | Gilani Enterprises',
   defaultDescription:
-    'Gilani Enterprises helps U.S. small businesses put AI to practical use and build stronger technology teams through intelligent workflow redesign, automation and global talent.',
+    'AI consulting, workflow automation and technology staff augmentation for U.S. small businesses, with teams in Oklahoma City and Pakistan.',
   /** Factual entity statement (brief §17) used in Organization schema. */
   entityDescription:
     'Gilani Enterprises is a technology consulting company serving small businesses in the United States. The company specializes in AI-assisted workflow redesign, AI agents and technology staff augmentation through teams in the United States and Pakistan.',
@@ -29,6 +29,7 @@ export const SITE = {
   locations: [
     {
       name: 'Oklahoma City, USA',
+      email: 'info@gilanillc.com',
       locality: 'Oklahoma City',
       region: 'OK',
       country: 'US',
@@ -36,6 +37,7 @@ export const SITE = {
     },
     {
       name: 'Gujrat, Pakistan',
+      email: 'infopak@gilanillc.com',
       locality: 'Gujrat',
       region: 'Punjab',
       country: 'PK',

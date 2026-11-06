@@ -69,3 +69,9 @@ To change the recipient, update `destination_address` and `CONTACT_TO` in `wrang
 2. **Privacy policy** (`/privacy/`) was written to match what the site does today (no cookies/analytics). Have it reviewed, and update it if analytics or a form processor are added.
 3. **Insights** shows placeholder article cards (clearly labelled, as the brief requires). Replace with real articles (Astro content collections recommended) and add `Article` schema then.
 4. **Hero "Explore Our Services" button** (white on `#10B981`) is 2.5:1 contrast — kept to preserve the design; darken the green (e.g. `#047857`) if you want full WCAG AA.
+
+## Search and AI discovery maintenance
+
+- `/llms.txt` is generated from `src/pages/llms.txt.ts` using facts from `src/config/site.ts`. Update curated links when pages change.
+- Insights is temporarily `noindex` and excluded from the sitemap while articles are placeholders. When articles launch, remove both exclusions, update the llms.txt note, and add article metadata.
+- llms.txt aids discovery; it does not guarantee rankings or AI citations.

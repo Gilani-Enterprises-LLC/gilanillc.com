@@ -5,7 +5,8 @@
  */
 import type { APIRoute } from 'astro';
 
-const EXCLUDE = new Set(['/404/', '/contact/thank-you/']);
+// Remove Insights exclusion and its noindex prop when real articles launch.
+const EXCLUDE = new Set(['/404/', '/contact/thank-you/', '/insights/']);
 
 // Discover every page component at build time.
 const pageModules = import.meta.glob('./**/*.astro');
